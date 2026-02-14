@@ -91,21 +91,31 @@ button {
 @keyframes spin{ from{transform:rotateX(-20deg) rotateY(0deg)} to{transform:rotateX(-20deg) rotateY(360deg)} }
 
 /* PUZZLE STYLES */
-.puzzle-box {
-  width: 150px; height: 150px;
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  width: 240px;
+  height: 240px;
   margin: 20px auto;
-  background: var(--pink);
-  border-radius: 20px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 50px; cursor: pointer;
-  transition: 0.5s;
+  background: rgba(0,0,0,0.2);
+  padding: 5px;
+  border-radius: 10px;
 }
-.puzzle-revealed {
-  width: 100%; height: 250px;
-  background-image: url('photo1.jpg'); /* You can change this to any photo */
-  background-size: cover; background-position: center;
-  border-radius: 20px;
-  animation: fadeIn 1s;
+.tile {
+  width: 75px;
+  height: 75px;
+  background-color: var(--pink);
+  background-image: url('photo1.jpg');
+  background-size: 225px 225px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+.tile.empty {
+  background: transparent !important;
+  cursor: default;
+  border: 1px dashed rgba(255,255,255,0.3);
 }
 
 #noBtn{ 
@@ -174,9 +184,9 @@ button {
 
 <div class="story">
   <div class="card">
-    <h1>A Secret for You 🎁</h1>
-    <p id="puzzleText">Click the heart to reveal a memory...</p>
-    <div id="puzzleBox" class="puzzle-box" onclick="revealMemory()">💝</div>
+    <h1>A Memory to Fix 🧩</h1>
+    <p id="puzzleText">Rearrange the pieces to reveal my heart...</p>
+    <div id="puzzleGrid" class="puzzle-grid"></div>
     <button id="puzzleContinue" style="display:none; margin-top: 20px;" onclick="nextStory()">Continue ❤️</button>
   </div>
 </div>
@@ -198,6 +208,7 @@ const music = document.getElementById('bgMusic');
 const muteBtn = document.getElementById('muteBtn');
 let current = 0;
 
+// Heart Background
 function createHeart() {
   const container = document.getElementById('hearts-container');
   const heart = document.createElement('div');
@@ -211,6 +222,7 @@ function createHeart() {
 }
 setInterval(createHeart, 400);
 
+// Navigation
 function nextStory() {
   if(current === 0) { 
     music.play().catch(() => {}); 
@@ -219,26 +231,81 @@ function nextStory() {
   
   stories[current].classList.remove('active');
   current++;
-  if(current < stories.length) stories[current].classList.add('active');
+  if(current < stories.length) {
+    stories[current].classList.add('active');
+    // Check if it's the puzzle page
+    if(stories[current].querySelector('#puzzleGrid')) {
+        initPuzzle();
+    }
+  }
 }
 
-function revealMemory() {
-  const box = document.getElementById('puzzleBox');
-  const text = document.getElementById('puzzleText');
-  const btn = document.getElementById('puzzleContinue');
-  
-  box.innerHTML = "";
-  box.classList.remove('puzzle-box');
-  box.classList.add('puzzle-revealed');
-  text.innerHTML = "Every moment with you is a treasure.";
-  btn.style.display = "inline-block";
+// Puzzle Logic
+let board = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+
+function initPuzzle() {
+    const grid = document.getElementById('puzzleGrid');
+    grid.innerHTML = '';
+    
+    // Shuffle logic (ensures it's solvable)
+    for(let i = 0; i < 100; i++) {
+        const emptyIndex = board.indexOf(0);
+        const neighbors = getNeighbors(emptyIndex);
+        const randomNeighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
+        [board[emptyIndex], board[randomNeighbor]] = [board[randomNeighbor], board[emptyIndex]];
+    }
+    renderBoard();
 }
 
-muteBtn.onclick = () => {
-  if(music.paused) { music.play(); muteBtn.textContent = '🔊'; }
-  else { music.pause(); muteBtn.textContent = '🔇'; }
-};
+function getNeighbors(idx) {
+    const neighbors = [];
+    if (idx % 3 > 0) neighbors.push(idx - 1); // Left
+    if (idx % 3 < 2) neighbors.push(idx + 1); // Right
+    if (idx > 2) neighbors.push(idx - 3);    // Up
+    if (idx < 6) neighbors.push(idx + 3);    // Down
+    return neighbors;
+}
 
+function renderBoard() {
+    const grid = document.getElementById('puzzleGrid');
+    grid.innerHTML = '';
+    board.forEach((tileNum, index) => {
+        const tile = document.createElement('div');
+        tile.className = 'tile' + (tileNum === 0 ? ' empty' : '');
+        if (tileNum !== 0) {
+            const row = Math.floor((tileNum - 1) / 3);
+            const col = (tileNum - 1) % 3;
+            tile.style.backgroundPosition = `-${col * 80}px -${row * 80}px`;
+            tile.onclick = () => moveTile(index);
+        }
+        grid.appendChild(tile);
+    });
+}
+
+function moveTile(index) {
+    const emptyIndex = board.indexOf(0);
+    const neighbors = getNeighbors(index);
+    if (neighbors.includes(emptyIndex)) {
+        [board[index], board[emptyIndex]] = [board[emptyIndex], board[index]];
+        renderBoard();
+        checkWin();
+    }
+}
+
+function checkWin() {
+    if (JSON.stringify(board) === JSON.stringify(goal)) {
+        document.getElementById('puzzleText').innerHTML = "Every piece of me belongs to you.";
+        document.getElementById('puzzleContinue').style.display = "inline-block";
+        // Fill the empty gap
+        const tiles = document.querySelectorAll('.tile');
+        const lastTile = tiles[board.indexOf(0)];
+        lastTile.classList.remove('empty');
+        lastTile.style.backgroundPosition = "-160px -160px";
+    }
+}
+
+// Final Action
 function yes() {
   document.body.innerHTML = `
     <div class="story active" style="background: radial-gradient(circle at center, #7a003c, #2b0014); height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
@@ -252,9 +319,15 @@ function yes() {
   setInterval(createHeart, 50);
 }
 
+// Mute logic
+muteBtn.onclick = () => {
+  if(music.paused) { music.play(); muteBtn.textContent = '🔊'; }
+  else { music.pause(); muteBtn.textContent = '🔇'; }
+};
+
+// No button evasion
 const noBtn = document.getElementById('noBtn');
 const card = document.getElementById('proposalCard');
-
 noBtn.onmouseover = noBtn.ontouchstart = (e) => {
   if(e.type === 'touchstart') e.preventDefault();
   noBtn.style.position = 'absolute';
