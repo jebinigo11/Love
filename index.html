@@ -95,19 +95,19 @@ button {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
-  width: 280px;
-  height: 280px;
+  width: 300px;
+  height: 300px;
   margin: 15px auto;
   background: rgba(255,255,255,0.1);
   padding: 8px;
   border-radius: 15px;
 }
 .tile {
-  width: 62px;
-  height: 62px;
+  width: 68px;
+  height: 68px;
   background-color: var(--pink);
   background-image: url('photo1.jpg');
-  background-size: 248px 248px;
+  background-size: 280px 280px;
   cursor: pointer;
   border-radius: 6px;
   transition: all 0.2s ease;
@@ -115,16 +115,6 @@ button {
 .tile.empty {
   background: transparent !important;
   border: 1px dashed rgba(255,255,255,0.2);
-}
-
-#skipPuzzle {
-  display: block;
-  margin-top: 15px;
-  font-size: 0.8rem;
-  color: var(--gold);
-  text-decoration: underline;
-  cursor: pointer;
-  opacity: 0.7;
 }
 
 #noBtn {
@@ -194,8 +184,14 @@ button {
     <h1>A Memory to Fix 🧩</h1>
     <p id="puzzleText">Solve this to see what's on my mind...</p>
     <div id="puzzleGrid" class="puzzle-grid"></div>
-    <button id="puzzleContinue" style="display:none; margin-top: 10px;" onclick="nextStory()">Continue ❤️</button>
-    <span id="skipPuzzle" onclick="nextStory()">Skip Puzzle (I can't wait!)</span>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+      <button id="puzzleContinue" style="display:none;" onclick="nextStory()">Continue ❤️</button>
+      <div id="puzzleActions" style="display: flex; gap: 10px;">
+        <button id="hintBtn" onclick="useHint()" style="padding: 10px 20px; font-size: 0.8rem; background: var(--gold); color: #33001a;">Magic Swap ✨</button>
+        <button id="skipBtn" onclick="nextStory()" style="padding: 10px 20px; font-size: 0.8rem; background: rgba(255,255,255,0.2);">Skip</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -234,14 +230,11 @@ function nextStory() {
     music.play().catch(() => {}); 
     muteBtn.textContent = '🔊'; 
   }
-  
   stories[current].classList.remove('active');
   current++;
   if(current < stories.length) {
     stories[current].classList.add('active');
-    if(stories[current].querySelector('#puzzleGrid')) {
-        initPuzzle();
-    }
+    if(stories[current].querySelector('#puzzleGrid')) initPuzzle();
   }
 }
 
@@ -250,9 +243,8 @@ let board = [];
 const goal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
 
 function initPuzzle() {
-    board = [...goal]; 
-    // Shuffle logic
-    for(let i = 0; i < 100; i++) {
+    board = [...goal];
+    for(let i = 0; i < 150; i++) {
         const emptyIdx = board.indexOf(0);
         const neighs = getNeighbors(emptyIdx);
         const rand = neighs[Math.floor(Math.random() * neighs.length)];
@@ -279,22 +271,38 @@ function renderBoard() {
         if(val !== 0) {
             const r = Math.floor((val-1)/4);
             const c = (val-1)%4;
-            tile.style.backgroundPosition = `-${c*62}px -${r*62}px`;
+            tile.style.backgroundPosition = `-${c*70}px -${r*70}px`;
             tile.onclick = () => {
                 const emptyIdx = board.indexOf(0);
                 if(getNeighbors(i).includes(emptyIdx)) {
                     [board[i], board[emptyIdx]] = [board[emptyIdx], board[i]];
                     renderBoard();
-                    if(JSON.stringify(board) === JSON.stringify(goal)) {
-                        document.getElementById('puzzleText').innerText = "Perfect! Just like us.";
-                        document.getElementById('puzzleContinue').style.display = "block";
-                        document.getElementById('skipPuzzle').style.display = "none";
-                    }
+                    checkWin();
                 }
             };
         }
         grid.appendChild(tile);
     });
+}
+
+function useHint() {
+    for (let i = 0; i < goal.length; i++) {
+        if (board[i] !== goal[i]) {
+            const currentIdx = board.indexOf(goal[i]);
+            [board[i], board[currentIdx]] = [board[currentIdx], board[i]];
+            renderBoard();
+            checkWin();
+            break; 
+        }
+    }
+}
+
+function checkWin() {
+    if(JSON.stringify(board) === JSON.stringify(goal)) {
+        document.getElementById('puzzleText').innerText = "Perfect! Just like us.";
+        document.getElementById('puzzleContinue').style.display = "block";
+        document.getElementById('puzzleActions').style.display = "none";
+    }
 }
 
 function moveNo() {
@@ -307,15 +315,7 @@ function moveNo() {
 }
 
 function yes() {
-  document.body.innerHTML = `
-    <div class="story active" style="background: radial-gradient(circle at center, #7a003c, #2b0014); height: 100vh; display: flex; align-items: center; justify-content: center;">
-      <div id="hearts-container"></div>
-      <div class="card">
-        <h1>Forever Started! 💗</h1>
-        <p>I promise to love you always, Jebii.</p>
-        <div style="font-size: 60px; animation: pulse 1.5s infinite;">💖</div>
-      </div>
-    </div>`;
+  document.body.innerHTML = `<div class="story active" style="height: 100vh; display: flex; align-items: center; justify-content: center;"><div class="card"><h1>Forever Started! 💗</h1><p>I promise to love you always, Jebii.</p><div style="font-size: 60px; animation: pulse 1.5s infinite;">💖</div></div></div>`;
   setInterval(createHeart, 50);
 }
 
