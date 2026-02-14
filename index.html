@@ -48,7 +48,6 @@ body{
   border-radius:35px;padding:40px 30px;
   box-shadow:0 25px 50px rgba(0,0,0,0.4);
   position:relative;
-  overflow: hidden; 
 }
 
 h1{font-family:'Allura',cursive;font-size:55px;color:var(--gold);text-shadow: 2px 2px 10px rgba(0,0,0,0.3);}
@@ -60,6 +59,8 @@ button {
   color:white; font-weight:600; cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 10px 20px rgba(255, 79, 154, 0.4);
+  position: relative;
+  z-index: 10;
 }
 
 #muteBtn{
@@ -69,24 +70,23 @@ button {
   cursor:pointer; z-index:1000; border: 1px solid rgba(255,255,255,0.3);
 }
 
-/* 3D CUBE */
-.scene{width:200px; height:200px; margin:40px auto; perspective:1200px;}
+.scene{width:180px; height:180px; margin:20px auto; perspective:1000px;}
 .cube{
   width:100%; height:100%; position:relative;
   transform-style:preserve-3d; animation:spin 15s linear infinite;
 }
 .cube div{
-  position:absolute; width:200px; height:200px;
+  position:absolute; width:180px; height:180px;
   background-size:cover; background-position:center;
   border: 2px solid rgba(255,255,255,0.4);
-  border-radius: 15px;
+  border-radius: 10px;
 }
-.cube .front{transform:translateZ(100px); background-image:url('photo1.jpg')}
-.cube .back{transform:rotateY(180deg) translateZ(100px); background-image:url('photo2.jpg')}
-.cube .right{transform:rotateY(90deg) translateZ(100px); background-image:url('photo3.jpg')}
-.cube .left{transform:rotateY(-90deg) translateZ(100px); background-image:url('photo4.jpg')}
-.cube .top{transform:rotateX(90deg) translateZ(100px); background-image:url('photo5.jpg')}
-.cube .bottom{transform:rotateX(-90deg) translateZ(100px); background-image:url('photo6.jpg')}
+.cube .front{transform:translateZ(90px); background-image:url('photo1.jpg')}
+.cube .back{transform:rotateY(180deg) translateZ(90px); background-image:url('photo1.jpg')}
+.cube .right{transform:rotateY(90deg) translateZ(90px); background-image:url('photo1.jpg')}
+.cube .left{transform:rotateY(-90deg) translateZ(90px); background-image:url('photo1.jpg')}
+.cube .top{transform:rotateX(90deg) translateZ(90px); background-image:url('photo1.jpg')}
+.cube .bottom{transform:rotateX(-90deg) translateZ(90px); background-image:url('photo1.jpg')}
 
 @keyframes spin{ from{transform:rotateX(-20deg) rotateY(0deg)} to{transform:rotateX(-20deg) rotateY(360deg)} }
 
@@ -94,36 +94,32 @@ button {
 .puzzle-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
-  width: 240px;
-  height: 240px;
+  gap: 8px;
+  width: 260px;
+  height: 260px;
   margin: 20px auto;
-  background: rgba(0,0,0,0.2);
-  padding: 5px;
-  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 15px;
 }
 .tile {
   width: 75px;
   height: 75px;
   background-color: var(--pink);
   background-image: url('photo1.jpg');
-  background-size: 225px 225px;
+  background-size: 240px 240px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 8px;
   transition: all 0.2s ease;
 }
 .tile.empty {
   background: transparent !important;
-  cursor: default;
-  border: 1px dashed rgba(255,255,255,0.3);
+  border: 1px dashed rgba(255,255,255,0.2);
 }
 
-#noBtn{ 
-  position: relative; 
-  background:#33001a; 
-  color:white; 
-  transition: 0.1s; 
-  z-index: 10;
+#noBtn {
+  transition: all 0.2s ease;
+  background: #440022;
 }
 
 .floating-heart {
@@ -141,7 +137,7 @@ button {
   0% { transform: translateY(110vh) rotate(-45deg) scale(1); opacity: 1; }
   100% { transform: translateY(-20vh) rotate(-45deg) scale(1.5); opacity: 0; }
 }
-@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 </style>
 </head>
@@ -154,21 +150,22 @@ button {
   <source src="Aval.mp3" type="audio/mpeg">
 </audio>
 
-<div class="story active" onclick="nextStory()">
+<div class="story active">
   <div class="card">
     <h1>Hey Jebii 💗</h1>
     <p>I made this little space to tell you something special...</p>
-    <div style="opacity:0.5; font-size:12px;">Tap to open my heart</div>
+    <button onclick="nextStory()">Open My Heart</button>
   </div>
 </div>
 
-<div class="story" onclick="nextStory()">
+<div class="story">
   <div class="card">
     <p>"In your eyes, I found my favorite view. In your heart, I found my home."</p>
+    <button onclick="nextStory()">Continue ✨</button>
   </div>
 </div>
 
-<div class="story" onclick="nextStory()">
+<div class="story">
   <div class="card">
     <h1>Ennavaleyy💞</h1>
     <div class="scene">
@@ -178,16 +175,16 @@ button {
         <div class="top"></div><div class="bottom"></div>
       </div>
     </div>
-    <div style="opacity:0.5; font-size:12px;">Tap to continue</div>
+    <button onclick="nextStory()">Next Memory 📸</button>
   </div>
 </div>
 
 <div class="story">
   <div class="card">
     <h1>A Memory to Fix 🧩</h1>
-    <p id="puzzleText">Rearrange the pieces to reveal my heart...</p>
+    <p id="puzzleText">Solve this to see what's on my mind...</p>
     <div id="puzzleGrid" class="puzzle-grid"></div>
-    <button id="puzzleContinue" style="display:none; margin-top: 20px;" onclick="nextStory()">Continue ❤️</button>
+    <button id="puzzleContinue" style="display:none; margin-top: 10px;" onclick="nextStory()">Continue ❤️</button>
   </div>
 </div>
 
@@ -195,9 +192,9 @@ button {
   <div class="card" id="proposalCard">
     <h1 style="font-size: 45px;">One last thing...</h1>
     <p>Will You Be Mine? 💍</p>
-    <div style="display:flex; justify-content: space-around; align-items: center; min-height: 180px; position: relative;">
+    <div style="display:flex; justify-content: center; gap: 40px; min-height: 200px; align-items: center; position: relative;">
         <button onclick="yes()">YES 💖</button>
-        <button id="noBtn">NO</button>
+        <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
     </div>
   </div>
 </div>
@@ -208,7 +205,6 @@ const music = document.getElementById('bgMusic');
 const muteBtn = document.getElementById('muteBtn');
 let current = 0;
 
-// Heart Background
 function createHeart() {
   const container = document.getElementById('hearts-container');
   const heart = document.createElement('div');
@@ -222,7 +218,6 @@ function createHeart() {
 }
 setInterval(createHeart, 400);
 
-// Navigation
 function nextStory() {
   if(current === 0) { 
     music.play().catch(() => {}); 
@@ -233,82 +228,77 @@ function nextStory() {
   current++;
   if(current < stories.length) {
     stories[current].classList.add('active');
-    // Check if it's the puzzle page
     if(stories[current].querySelector('#puzzleGrid')) {
         initPuzzle();
     }
   }
 }
 
-// Puzzle Logic
+/* PUZZLE LOGIC */
 let board = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 
 function initPuzzle() {
+    board = [1, 2, 3, 4, 5, 6, 7, 8, 0]; 
     const grid = document.getElementById('puzzleGrid');
-    grid.innerHTML = '';
     
-    // Shuffle logic (ensures it's solvable)
-    for(let i = 0; i < 100; i++) {
-        const emptyIndex = board.indexOf(0);
-        const neighbors = getNeighbors(emptyIndex);
-        const randomNeighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
-        [board[emptyIndex], board[randomNeighbor]] = [board[randomNeighbor], board[emptyIndex]];
+    // Shuffle
+    for(let i = 0; i < 50; i++) {
+        const emptyIdx = board.indexOf(0);
+        const neighs = getNeighbors(emptyIdx);
+        const rand = neighs[Math.floor(Math.random() * neighs.length)];
+        [board[emptyIdx], board[rand]] = [board[rand], board[emptyIdx]];
     }
     renderBoard();
 }
 
-function getNeighbors(idx) {
-    const neighbors = [];
-    if (idx % 3 > 0) neighbors.push(idx - 1); // Left
-    if (idx % 3 < 2) neighbors.push(idx + 1); // Right
-    if (idx > 2) neighbors.push(idx - 3);    // Up
-    if (idx < 6) neighbors.push(idx + 3);    // Down
-    return neighbors;
+function getNeighbors(i) {
+    const res = [];
+    if (i % 3 > 0) res.push(i - 1);
+    if (i % 3 < 2) res.push(i + 1);
+    if (i > 2) res.push(i - 3);
+    if (i < 6) res.push(i + 3);
+    return res;
 }
 
 function renderBoard() {
     const grid = document.getElementById('puzzleGrid');
     grid.innerHTML = '';
-    board.forEach((tileNum, index) => {
+    board.forEach((val, i) => {
         const tile = document.createElement('div');
-        tile.className = 'tile' + (tileNum === 0 ? ' empty' : '');
-        if (tileNum !== 0) {
-            const row = Math.floor((tileNum - 1) / 3);
-            const col = (tileNum - 1) % 3;
-            tile.style.backgroundPosition = `-${col * 80}px -${row * 80}px`;
-            tile.onclick = () => moveTile(index);
+        tile.className = 'tile' + (val === 0 ? ' empty' : '');
+        if(val !== 0) {
+            const r = Math.floor((val-1)/3);
+            const c = (val-1)%3;
+            tile.style.backgroundPosition = `-${c*80}px -${r*80}px`;
+            tile.onclick = () => {
+                const emptyIdx = board.indexOf(0);
+                if(getNeighbors(i).includes(emptyIdx)) {
+                    [board[i], board[emptyIdx]] = [board[emptyIdx], board[i]];
+                    renderBoard();
+                    if(JSON.stringify(board) === JSON.stringify(goal)) {
+                        document.getElementById('puzzleText').innerText = "Perfect! Just like us.";
+                        document.getElementById('puzzleContinue').style.display = "block";
+                    }
+                }
+            };
         }
         grid.appendChild(tile);
     });
 }
 
-function moveTile(index) {
-    const emptyIndex = board.indexOf(0);
-    const neighbors = getNeighbors(index);
-    if (neighbors.includes(emptyIndex)) {
-        [board[index], board[emptyIndex]] = [board[emptyIndex], board[index]];
-        renderBoard();
-        checkWin();
-    }
+function moveNo() {
+    const btn = document.getElementById('noBtn');
+    btn.style.position = 'fixed'; // Breaks out of the card container
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    btn.style.left = x + 'px';
+    btn.style.top = y + 'px';
 }
 
-function checkWin() {
-    if (JSON.stringify(board) === JSON.stringify(goal)) {
-        document.getElementById('puzzleText').innerHTML = "Every piece of me belongs to you.";
-        document.getElementById('puzzleContinue').style.display = "inline-block";
-        // Fill the empty gap
-        const tiles = document.querySelectorAll('.tile');
-        const lastTile = tiles[board.indexOf(0)];
-        lastTile.classList.remove('empty');
-        lastTile.style.backgroundPosition = "-160px -160px";
-    }
-}
-
-// Final Action
 function yes() {
   document.body.innerHTML = `
-    <div class="story active" style="background: radial-gradient(circle at center, #7a003c, #2b0014); height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
+    <div class="story active" style="background: radial-gradient(circle at center, #7a003c, #2b0014); height: 100vh; display: flex; align-items: center; justify-content: center;">
       <div id="hearts-container"></div>
       <div class="card">
         <h1>Forever Started! 💗</h1>
@@ -319,24 +309,9 @@ function yes() {
   setInterval(createHeart, 50);
 }
 
-// Mute logic
 muteBtn.onclick = () => {
   if(music.paused) { music.play(); muteBtn.textContent = '🔊'; }
   else { music.pause(); muteBtn.textContent = '🔇'; }
-};
-
-// No button evasion
-const noBtn = document.getElementById('noBtn');
-const card = document.getElementById('proposalCard');
-noBtn.onmouseover = noBtn.ontouchstart = (e) => {
-  if(e.type === 'touchstart') e.preventDefault();
-  noBtn.style.position = 'absolute';
-  const maxX = card.clientWidth - noBtn.offsetWidth - 40;
-  const maxY = card.clientHeight - noBtn.offsetHeight - 40;
-  const x = Math.random() * maxX + 20;
-  const y = Math.random() * maxY + 20;
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
 };
 </script>
 </body>
