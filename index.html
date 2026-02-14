@@ -57,7 +57,7 @@ button {
   padding:15px 35px; border:none; border-radius:50px;
   background:linear-gradient(135deg, var(--pink), var(--accent));
   color:white; font-weight:600; cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.2s, box-shadow 0.3s;
   box-shadow: 0 10px 20px rgba(255, 79, 154, 0.4);
   position: relative;
   z-index: 10;
@@ -118,8 +118,9 @@ button {
 }
 
 #noBtn {
-  transition: all 0.2s ease;
+  transition: all 0.1s ease-out; /* Faster movement */
   background: #440022;
+  position: absolute;
 }
 
 .floating-heart {
@@ -196,12 +197,12 @@ button {
 </div>
 
 <div class="story">
-  <div class="card" id="proposalCard">
+  <div class="card" id="proposalCard" style="min-height: 400px; display: flex; flex-direction: column; justify-content: center;">
     <h1 style="font-size: 45px;">One last thing...</h1>
     <p>Will You Be Mine? 💍</p>
-    <div style="display:flex; justify-content: center; gap: 40px; min-height: 200px; align-items: center; position: relative;">
-        <button onclick="yes()">YES 💖</button>
-        <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
+    <div style="display:flex; justify-content: center; gap: 40px; margin-top: 30px; position: relative; height: 100px; width: 100%;">
+        <button onclick="yes()" style="height: 60px; width: 120px;">YES 💖</button>
+        <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()" style="height: 60px; width: 120px; left: 60%;">NO</button>
     </div>
   </div>
 </div>
@@ -223,7 +224,7 @@ function createHeart() {
   container.appendChild(heart);
   setTimeout(() => heart.remove(), 7000);
 }
-setInterval(createHeart, 400);
+let heartInterval = setInterval(createHeart, 400);
 
 function nextStory() {
   if(current === 0) { 
@@ -307,15 +308,35 @@ function checkWin() {
 
 function moveNo() {
     const btn = document.getElementById('noBtn');
+    // More aggressive dodging logic
+    const padding = 50;
+    const maxX = window.innerWidth - btn.offsetWidth - padding;
+    const maxY = window.innerHeight - btn.offsetHeight - padding;
+    
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+    
     btn.style.position = 'fixed';
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
-    btn.style.left = x + 'px';
-    btn.style.top = y + 'px';
+    btn.style.left = newX + 'px';
+    btn.style.top = newY + 'px';
 }
 
 function yes() {
-  document.body.innerHTML = `<div class="story active" style="height: 100vh; display: flex; align-items: center; justify-content: center;"><div class="card"><h1>Forever Started! 💗</h1><p>I promise to love you always, Jebii.</p><div style="font-size: 60px; animation: pulse 1.5s infinite;">💖</div></div></div>`;
+  // Clear existing slower heart interval
+  clearInterval(heartInterval);
+  
+  document.body.innerHTML = `
+    <div id="hearts-container"></div>
+    <div class="story active" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+      <div class="card" style="animation: pulse 2s infinite;">
+        <h1>Forever Started! 💗</h1>
+        <p>I promise to love you always, Jebii.</p>
+        <div style="font-size: 80px; margin-top: 20px;">💍✨</div>
+        <p style="font-size: 1rem; color: var(--gold);">You've made me the happiest person!</p>
+      </div>
+    </div>`;
+  
+  // High-speed heart fountain for the final slide
   setInterval(createHeart, 50);
 }
 
