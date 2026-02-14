@@ -23,7 +23,6 @@ body{
   height: 100vh;
 }
 
-/* Floating Hearts Layer */
 #hearts-container {
   position: fixed;
   top: 0; left: 0;
@@ -49,6 +48,7 @@ body{
   border-radius:35px;padding:40px 30px;
   box-shadow:0 25px 50px rgba(0,0,0,0.4);
   position:relative;
+  overflow: hidden; /* Keeps the NO button inside the box */
 }
 
 h1{font-family:'Allura',cursive;font-size:55px;color:var(--gold);text-shadow: 2px 2px 10px rgba(0,0,0,0.3);}
@@ -73,7 +73,6 @@ button:hover { transform: scale(1.05); box-shadow: 0 15px 25px rgba(255, 79, 154
   cursor:pointer; z-index:1000; border: 1px solid rgba(255,255,255,0.3);
 }
 
-/* 3D CUBE */
 .scene{width:200px; height:200px; margin:40px auto; perspective:1200px;}
 .cube{
   width:100%; height:100%; position:relative;
@@ -86,7 +85,6 @@ button:hover { transform: scale(1.05); box-shadow: 0 15px 25px rgba(255, 79, 154
   border-radius: 15px;
 }
 
-/* Updated Paths from your GitHub files */
 .cube .front{transform:translateZ(100px); background-image:url('photo1.jpg.png')}
 .cube .back{transform:rotateY(180deg) translateZ(100px); background-image:url('photo2.jpg')}
 .cube .right{transform:rotateY(90deg) translateZ(100px); background-image:url('photo3.jpg')}
@@ -99,9 +97,17 @@ button:hover { transform: scale(1.05); box-shadow: 0 15px 25px rgba(255, 79, 154
 video {
   width: 100%; border-radius: 20px; border: 2px solid var(--glass);
   margin: 15px 0; outline: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  background: black;
 }
 
-#noBtn{ position:absolute; background:#33001a; color:white; transition: 0.2s; z-index: 10; }
+#noBtn{ 
+  position:absolute; 
+  background:#33001a; 
+  color:white; 
+  transition: 0.1s; 
+  z-index: 10;
+  white-space: nowrap;
+}
 
 .floating-heart {
   position: absolute; background-color: var(--pink);
@@ -163,19 +169,20 @@ video {
 <div class="story">
   <div class="card">
     <h1>Press Play 🎥</h1>
-    <video id="myVideo" controls>
+    <video id="myVideo" playsinline controls>
       <source src="video.mp4" type="video/mp4">
+      Your browser does not support the video.
     </video>
     <button onclick="nextStory()" style="margin-top:10px">Continue ❤️</button>
   </div>
 </div>
 
 <div class="story">
-  <div class="card">
+  <div class="card" id="lastCard">
     <h1 style="font-size: 45px;">One last thing...</h1>
     <p>I don't just want you for today. I want you for every tomorrow.</p>
     <h2 style="font-family:'Allura'; font-size: 48px; color: var(--gold); margin-bottom: 20px;">Will You Be Mine? 💍</h2>
-    <div style="display:flex; justify-content: space-around; align-items: center; min-height: 100px; position: relative;">
+    <div style="display:flex; justify-content: space-around; align-items: center; min-height: 120px; position: relative;">
         <button onclick="yes()">YES 💖</button>
         <button id="noBtn">NO</button>
     </div>
@@ -186,6 +193,7 @@ video {
 const stories = document.querySelectorAll('.story');
 const music = document.getElementById('bgMusic');
 const muteBtn = document.getElementById('muteBtn');
+const video = document.getElementById('myVideo');
 let current = 0, muted = true;
 
 function createHeart() {
@@ -210,7 +218,13 @@ function nextStory() {
     muted = false;
     muteBtn.textContent = '🔊';
   }
-  if(current === 3) { music.volume = 0.1; } else { music.volume = 0.5; }
+  // Lower music volume for video page
+  if(current === 2) { 
+    music.volume = 0.1; 
+  } else if (current >= 3) {
+    music.volume = 0.5;
+    video.pause(); // Stop video if they move past it
+  }
 
   stories[current].classList.remove('active');
   current++;
@@ -236,14 +250,25 @@ function yes() {
   setInterval(createHeart, 50);
 }
 
+// Fixed NO button logic to stay inside the box
 const noBtn = document.getElementById('noBtn');
+const lastCard = document.getElementById('lastCard');
+
 noBtn.onmouseover = noBtn.ontouchstart = (e) => {
-  e.preventDefault();
-  const x = Math.random() * (window.innerWidth - 100);
-  const y = Math.random() * (window.innerHeight - 50);
-  noBtn.style.position = 'fixed';
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
+  if(e.type === 'touchstart') e.preventDefault();
+  
+  const cardRect = lastCard.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+
+  // Calculate limits (staying inside the card padding)
+  const maxX = cardRect.width - btnRect.width - 20;
+  const maxY = cardRect.height - btnRect.height - 20;
+
+  const newX = Math.random() * maxX;
+  const newY = Math.random() * maxY;
+
+  noBtn.style.left = newX + 'px';
+  noBtn.style.top = newY + 'px';
 };
 </script>
 </body>
