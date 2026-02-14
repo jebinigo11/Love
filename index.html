@@ -41,20 +41,20 @@ body{
 .story.active{display:flex; animation: fadeIn 0.8s ease-out;}
 
 .card{
-  max-width:450px;width:100%;
+  max-width:420px;width:100%;
   background:var(--glass);
   backdrop-filter:blur(25px);
   border: 1px solid rgba(255,255,255,0.25);
-  border-radius:35px;padding:30px 20px;
+  border-radius:35px;padding:40px 30px;
   box-shadow:0 25px 50px rgba(0,0,0,0.4);
   position:relative;
 }
 
 h1{font-family:'Allura',cursive;font-size:55px;color:var(--gold);text-shadow: 2px 2px 10px rgba(0,0,0,0.3);}
-p{margin:15px 0;line-height:1.6; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem;}
+p{margin:20px 0;line-height:1.8; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem;}
 
 button {
-  padding:12px 30px; border:none; border-radius:50px;
+  padding:15px 35px; border:none; border-radius:50px;
   background:linear-gradient(135deg, var(--pink), var(--accent));
   color:white; font-weight:600; cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -70,31 +70,56 @@ button {
   cursor:pointer; z-index:1000; border: 1px solid rgba(255,255,255,0.3);
 }
 
-/* 4x4 PUZZLE STYLES */
+.scene{width:180px; height:180px; margin:20px auto; perspective:1000px;}
+.cube{
+  width:100%; height:100%; position:relative;
+  transform-style:preserve-3d; animation:spin 15s linear infinite;
+}
+.cube div{
+  position:absolute; width:180px; height:180px;
+  background-size:cover; background-position:center;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 10px;
+}
+.cube .front{transform:translateZ(90px); background-image:url('photo1.jpg')}
+.cube .back{transform:rotateY(180deg) translateZ(90px); background-image:url('photo1.jpg')}
+.cube .right{transform:rotateY(90deg) translateZ(90px); background-image:url('photo1.jpg')}
+.cube .left{transform:rotateY(-90deg) translateZ(90px); background-image:url('photo1.jpg')}
+.cube .top{transform:rotateX(90deg) translateZ(90px); background-image:url('photo1.jpg')}
+.cube .bottom{transform:rotateX(-90deg) translateZ(90px); background-image:url('photo1.jpg')}
+
+@keyframes spin{ from{transform:rotateX(-20deg) rotateY(0deg)} to{transform:rotateX(-20deg) rotateY(360deg)} }
+
+/* PUZZLE STYLES - UPDATED FOR 4x4 */
 .puzzle-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
+  gap: 6px;
   width: 300px;
   height: 300px;
-  margin: 15px auto;
+  margin: 20px auto;
   background: rgba(255,255,255,0.1);
   padding: 8px;
-  border-radius: 12px;
+  border-radius: 15px;
 }
 .tile {
   width: 68px;
   height: 68px;
   background-color: var(--pink);
   background-image: url('photo1.jpg');
-  background-size: 280px 280px; /* Adjusted for 4x4 */
+  background-size: 280px 280px; /* 4 * 70px approx */
   cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.15s ease;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 .tile.empty {
   background: transparent !important;
   border: 1px dashed rgba(255,255,255,0.2);
+}
+
+#noBtn {
+  transition: all 0.2s ease;
+  background: #440022;
 }
 
 .floating-heart {
@@ -109,12 +134,11 @@ button {
 .floating-heart::after { top: 0; left: 50%; }
 
 @keyframes floatUp {
-  0% { transform: translateY(110vh) rotate(-45deg) scale(0.8); opacity: 0; }
-  10% { opacity: 0.8; }
-  90% { opacity: 0.8; }
-  100% { transform: translateY(-20vh) rotate(-45deg) scale(1.2); opacity: 0; }
+  0% { transform: translateY(110vh) rotate(-45deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-20vh) rotate(-45deg) scale(1.5); opacity: 0; }
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 </style>
 </head>
 <body>
@@ -136,8 +160,29 @@ button {
 
 <div class="story">
   <div class="card">
+    <p>"In your eyes, I found my favorite view. In your heart, I found my home."</p>
+    <button onclick="nextStory()">Continue ✨</button>
+  </div>
+</div>
+
+<div class="story">
+  <div class="card">
+    <h1>Ennavaleyy💞</h1>
+    <div class="scene">
+      <div class="cube">
+        <div class="front"></div><div class="back"></div>
+        <div class="right"></div><div class="left"></div>
+        <div class="top"></div><div class="bottom"></div>
+      </div>
+    </div>
+    <button onclick="nextStory()">Next Memory 📸</button>
+  </div>
+</div>
+
+<div class="story">
+  <div class="card">
     <h1>A Memory to Fix 🧩</h1>
-    <p id="puzzleText">This one is a bit harder, just like finding someone as perfect as you...</p>
+    <p id="puzzleText">Solve this to see what's on my mind...</p>
     <div id="puzzleGrid" class="puzzle-grid"></div>
     <button id="puzzleContinue" style="display:none; margin-top: 10px;" onclick="nextStory()">Continue ❤️</button>
   </div>
@@ -164,36 +209,40 @@ function createHeart() {
   const container = document.getElementById('hearts-container');
   const heart = document.createElement('div');
   heart.className = 'floating-heart';
-  const size = Math.random() * 12 + 8 + 'px';
+  const size = Math.random() * 15 + 10 + 'px';
   heart.style.width = size; heart.style.height = size;
   heart.style.left = Math.random() * 100 + 'vw';
-  // Randomized speeds for the floating hearts
-  heart.style.animationDuration = Math.random() * 4 + 3 + 's';
+  heart.style.animationDuration = Math.random() * 3 + 4 + 's';
   container.appendChild(heart);
   setTimeout(() => heart.remove(), 7000);
 }
-setInterval(createHeart, 300);
+setInterval(createHeart, 400);
 
 function nextStory() {
   if(current === 0) { 
     music.play().catch(() => {}); 
     muteBtn.textContent = '🔊'; 
   }
+  
   stories[current].classList.remove('active');
   current++;
   if(current < stories.length) {
     stories[current].classList.add('active');
-    if(stories[current].querySelector('#puzzleGrid')) initPuzzle();
+    if(stories[current].querySelector('#puzzleGrid')) {
+        initPuzzle();
+    }
   }
 }
 
 /* 4x4 PUZZLE LOGIC */
-let board = Array.from({length: 16}, (_, i) => (i + 1) % 16);
-const goal = [...board];
+let board = [];
+const goal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
 
 function initPuzzle() {
-    // Shuffle
-    for(let i = 0; i < 200; i++) {
+    board = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0]; 
+    
+    // Shuffle logic for 4x4
+    for(let i = 0; i < 150; i++) {
         const emptyIdx = board.indexOf(0);
         const neighs = getNeighbors(emptyIdx);
         const rand = neighs[Math.floor(Math.random() * neighs.length)];
@@ -204,10 +253,10 @@ function initPuzzle() {
 
 function getNeighbors(i) {
     const res = [];
-    if (i % 4 > 0) res.push(i - 1);
-    if (i % 4 < 3) res.push(i + 1);
-    if (i > 3) res.push(i - 4);
-    if (i < 12) res.push(i + 4);
+    if (i % 4 > 0) res.push(i - 1); // Left
+    if (i % 4 < 3) res.push(i + 1); // Right
+    if (i > 3) res.push(i - 4);     // Up
+    if (i < 12) res.push(i + 4);    // Down
     return res;
 }
 
@@ -220,7 +269,7 @@ function renderBoard() {
         if(val !== 0) {
             const r = Math.floor((val-1)/4);
             const c = (val-1)%4;
-            // 70px offset for 4x4 grid
+            // Background positioning based on 70px tiles (adjusted for 4x4)
             tile.style.backgroundPosition = `-${c*70}px -${r*70}px`;
             tile.onclick = () => {
                 const emptyIdx = board.indexOf(0);
@@ -228,7 +277,7 @@ function renderBoard() {
                     [board[i], board[emptyIdx]] = [board[emptyIdx], board[i]];
                     renderBoard();
                     if(JSON.stringify(board) === JSON.stringify(goal)) {
-                        document.getElementById('puzzleText').innerText = "You fixed it! Just like you fix my bad days.";
+                        document.getElementById('puzzleText').innerText = "Perfect! Just like us.";
                         document.getElementById('puzzleContinue').style.display = "block";
                     }
                 }
@@ -248,9 +297,14 @@ function moveNo() {
 }
 
 function yes() {
-  document.body.innerHTML = `<div class="story active" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+  document.body.innerHTML = `
+    <div class="story active" style="background: radial-gradient(circle at center, #7a003c, #2b0014); height: 100vh; display: flex; align-items: center; justify-content: center;">
       <div id="hearts-container"></div>
-      <div class="card"><h1>Forever Started! 💗</h1><p>I promise to love you always, Jebii.</p><span>💖</span></div>
+      <div class="card">
+        <h1>Forever Started! 💗</h1>
+        <p>I promise to love you always, Jebii.</p>
+        <div style="font-size: 60px; animation: pulse 1.5s infinite;">💖</div>
+      </div>
     </div>`;
   setInterval(createHeart, 50);
 }
