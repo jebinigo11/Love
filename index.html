@@ -9,77 +9,77 @@
 
 <style>
 :root{
-  --pink:#ff9acb;
-  --gold:#f5c77a;
-  --glass:rgba(255, 255, 255, 0.15);
-  --accent: #ff4f9a;
+  --pink:#ff9acb;
+  --gold:#f5c77a;
+  --glass:rgba(255, 255, 255, 0.15);
+  --accent: #ff4f9a;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-  font-family:'Poppins', sans-serif;
-  background: radial-gradient(circle at center, #7a003c, #2b0014);
-  color:white;
-  overflow:hidden;
-  height: 100vh;
+  font-family:'Poppins', sans-serif;
+  background: radial-gradient(circle at center, #7a003c, #2b0014);
+  color:white;
+  overflow:hidden;
+  height: 100vh;
 }
 
 #hearts-container {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 1;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .story{
-  height:100vh;width:100vw;display:none;
-  align-items:center;justify-content:center;
-  text-align:center;padding:20px;
-  position: relative;
-  z-index: 2;
+  height:100vh;width:100vw;display:none;
+  align-items:center;justify-content:center;
+  text-align:center;padding:20px;
+  position: relative;
+  z-index: 2;
 }
 .story.active{display:flex; animation: fadeIn 0.8s ease-out;}
 
 .card{
-  max-width:420px;width:100%;
-  background:var(--glass);
-  backdrop-filter:blur(25px);
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius:35px;padding:40px 30px;
-  box-shadow:0 25px 50px rgba(0,0,0,0.4);
-  position:relative;
+  max-width:420px;width:100%;
+  background:var(--glass);
+  backdrop-filter:blur(25px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius:35px;padding:40px 30px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.4);
+  position:relative;
 }
 
 h1{font-family:'Allura',cursive;font-size:55px;color:var(--gold);text-shadow: 2px 2px 10px rgba(0,0,0,0.3);}
 p{margin:20px 0;line-height:1.8; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem;}
 
 button {
-  padding:15px 35px; border:none; border-radius:50px;
-  background:linear-gradient(135deg, var(--pink), var(--accent));
-  color:white; font-weight:600; cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 10px 20px rgba(255, 79, 154, 0.4);
-  position: relative;
-  z-index: 10;
+  padding:15px 35px; border:none; border-radius:50px;
+  background:linear-gradient(135deg, var(--pink), var(--accent));
+  color:white; font-weight:600; cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 10px 20px rgba(255, 79, 154, 0.4);
+  position: relative;
+  z-index: 10;
 }
 
 #muteBtn{
-  position:fixed;top:20px;right:20px;
-  background:var(--glass); border-radius:50%; width:50px; height:50px;
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; z-index:1000; border: 1px solid rgba(255,255,255,0.3);
+  position:fixed;top:20px;right:20px;
+  background:var(--glass); border-radius:50%; width:50px; height:50px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:1000; border: 1px solid rgba(255,255,255,0.3);
 }
 
 .scene{width:180px; height:180px; margin:20px auto; perspective:1000px;}
 .cube{
-  width:100%; height:100%; position:relative;
-  transform-style:preserve-3d; animation:spin 15s linear infinite;
+  width:100%; height:100%; position:relative;
+  transform-style:preserve-3d; animation:spin 15s linear infinite;
 }
 .cube div{
-  position:absolute; width:180px; height:180px;
-  background-size:cover; background-position:center;
-  border: 2px solid rgba(255,255,255,0.4);
-  border-radius: 10px;
+  position:absolute; width:180px; height:180px;
+  background-size:cover; background-position:center;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 10px;
 }
 .cube .front{transform:translateZ(90px); background-image:url('photo1.jpg')}
 .cube .back{transform:rotateY(180deg) translateZ(90px); background-image:url('photo1.jpg')}
@@ -90,52 +90,52 @@ button {
 
 @keyframes spin{ from{transform:rotateX(-20deg) rotateY(0deg)} to{transform:rotateX(-20deg) rotateY(360deg)} }
 
-/* PUZZLE STYLES - UPDATED FOR 4x4 */
+/* PUZZLE STYLES */
 .puzzle-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  width: 300px;
-  height: 300px;
-  margin: 20px auto;
-  background: rgba(255,255,255,0.1);
-  padding: 8px;
-  border-radius: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 260px;
+  height: 260px;
+  margin: 20px auto;
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 15px;
 }
 .tile {
-  width: 68px;
-  height: 68px;
-  background-color: var(--pink);
-  background-image: url('photo1.jpg');
-  background-size: 280px 280px; /* 4 * 70px approx */
-  cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  width: 75px;
+  height: 75px;
+  background-color: var(--pink);
+  background-image: url('photo1.jpg');
+  background-size: 240px 240px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 .tile.empty {
-  background: transparent !important;
-  border: 1px dashed rgba(255,255,255,0.2);
+  background: transparent !important;
+  border: 1px dashed rgba(255,255,255,0.2);
 }
 
 #noBtn {
-  transition: all 0.2s ease;
-  background: #440022;
+  transition: all 0.2s ease;
+  background: #440022;
 }
 
 .floating-heart {
-  position: absolute; background-color: var(--pink);
-  transform: rotate(-45deg); opacity: 0.8; animation: floatUp linear infinite;
+  position: absolute; background-color: var(--pink);
+  transform: rotate(-45deg); opacity: 0.8; animation: floatUp linear infinite;
 }
 .floating-heart::before, .floating-heart::after {
-  content: ""; position: absolute; width: 100%; height: 100%;
-  background-color: inherit; border-radius: 50%;
+  content: ""; position: absolute; width: 100%; height: 100%;
+  background-color: inherit; border-radius: 50%;
 }
 .floating-heart::before { top: -50%; left: 0; }
 .floating-heart::after { top: 0; left: 50%; }
 
 @keyframes floatUp {
-  0% { transform: translateY(110vh) rotate(-45deg) scale(1); opacity: 1; }
-  100% { transform: translateY(-20vh) rotate(-45deg) scale(1.5); opacity: 0; }
+  0% { transform: translateY(110vh) rotate(-45deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-20vh) rotate(-45deg) scale(1.5); opacity: 0; }
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
@@ -147,56 +147,56 @@ button {
 <div id="muteBtn">🔇</div>
 
 <audio id="bgMusic" loop preload="auto">
-  <source src="Aval.mp3" type="audio/mpeg">
+  <source src="Aval.mp3" type="audio/mpeg">
 </audio>
 
 <div class="story active">
-  <div class="card">
-    <h1>Hey Jebii 💗</h1>
-    <p>I made this little space to tell you something special...</p>
-    <button onclick="nextStory()">Open My Heart</button>
-  </div>
+  <div class="card">
+    <h1>Hey Jebii 💗</h1>
+    <p>I made this little space to tell you something special...</p>
+    <button onclick="nextStory()">Open My Heart</button>
+  </div>
 </div>
 
 <div class="story">
-  <div class="card">
-    <p>"In your eyes, I found my favorite view. In your heart, I found my home."</p>
-    <button onclick="nextStory()">Continue ✨</button>
-  </div>
+  <div class="card">
+    <p>"In your eyes, I found my favorite view. In your heart, I found my home."</p>
+    <button onclick="nextStory()">Continue ✨</button>
+  </div>
 </div>
 
 <div class="story">
-  <div class="card">
-    <h1>Ennavaleyy💞</h1>
-    <div class="scene">
-      <div class="cube">
-        <div class="front"></div><div class="back"></div>
-        <div class="right"></div><div class="left"></div>
-        <div class="top"></div><div class="bottom"></div>
-      </div>
-    </div>
-    <button onclick="nextStory()">Next Memory 📸</button>
-  </div>
+  <div class="card">
+    <h1>Ennavaleyy💞</h1>
+    <div class="scene">
+      <div class="cube">
+        <div class="front"></div><div class="back"></div>
+        <div class="right"></div><div class="left"></div>
+        <div class="top"></div><div class="bottom"></div>
+      </div>
+    </div>
+    <button onclick="nextStory()">Next Memory 📸</button>
+  </div>
 </div>
 
 <div class="story">
-  <div class="card">
-    <h1>A Memory to Fix 🧩</h1>
-    <p id="puzzleText">Solve this to see what's on my mind...</p>
-    <div id="puzzleGrid" class="puzzle-grid"></div>
-    <button id="puzzleContinue" style="display:none; margin-top: 10px;" onclick="nextStory()">Continue ❤️</button>
-  </div>
+  <div class="card">
+    <h1>A Memory to Fix 🧩</h1>
+    <p id="puzzleText">Solve this to see what's on my mind...</p>
+    <div id="puzzleGrid" class="puzzle-grid"></div>
+    <button id="puzzleContinue" style="display:none; margin-top: 10px;" onclick="nextStory()">Continue ❤️</button>
+  </div>
 </div>
 
 <div class="story">
-  <div class="card" id="proposalCard">
-    <h1 style="font-size: 45px;">One last thing...</h1>
-    <p>Will You Be Mine? 💍</p>
-    <div style="display:flex; justify-content: center; gap: 40px; min-height: 200px; align-items: center; position: relative;">
-        <button onclick="yes()">YES 💖</button>
-        <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
-    </div>
-  </div>
+  <div class="card" id="proposalCard">
+    <h1 style="font-size: 45px;">One last thing...</h1>
+    <p>Will You Be Mine? 💍</p>
+    <div style="display:flex; justify-content: center; gap: 40px; min-height: 200px; align-items: center; position: relative;">
+        <button onclick="yes()">YES 💖</button>
+        <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -206,113 +206,113 @@ const muteBtn = document.getElementById('muteBtn');
 let current = 0;
 
 function createHeart() {
-  const container = document.getElementById('hearts-container');
-  const heart = document.createElement('div');
-  heart.className = 'floating-heart';
-  const size = Math.random() * 15 + 10 + 'px';
-  heart.style.width = size; heart.style.height = size;
-  heart.style.left = Math.random() * 100 + 'vw';
-  heart.style.animationDuration = Math.random() * 3 + 4 + 's';
-  container.appendChild(heart);
-  setTimeout(() => heart.remove(), 7000);
+  const container = document.getElementById('hearts-container');
+  const heart = document.createElement('div');
+  heart.className = 'floating-heart';
+  const size = Math.random() * 15 + 10 + 'px';
+  heart.style.width = size; heart.style.height = size;
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+  container.appendChild(heart);
+  setTimeout(() => heart.remove(), 7000);
 }
 setInterval(createHeart, 400);
 
 function nextStory() {
-  if(current === 0) { 
-    music.play().catch(() => {}); 
-    muteBtn.textContent = '🔊'; 
-  }
-  
-  stories[current].classList.remove('active');
-  current++;
-  if(current < stories.length) {
-    stories[current].classList.add('active');
-    if(stories[current].querySelector('#puzzleGrid')) {
-        initPuzzle();
-    }
-  }
+  if(current === 0) { 
+    music.play().catch(() => {}); 
+    muteBtn.textContent = '🔊'; 
+  }
+  
+  stories[current].classList.remove('active');
+  current++;
+  if(current < stories.length) {
+    stories[current].classList.add('active');
+    if(stories[current].querySelector('#puzzleGrid')) {
+        initPuzzle();
+    }
+  }
 }
 
-/* 4x4 PUZZLE LOGIC */
-let board = [];
-const goal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
+/* PUZZLE LOGIC */
+let board = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 
 function initPuzzle() {
-    board = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0]; 
-    
-    // Shuffle logic for 4x4
-    for(let i = 0; i < 150; i++) {
-        const emptyIdx = board.indexOf(0);
-        const neighs = getNeighbors(emptyIdx);
-        const rand = neighs[Math.floor(Math.random() * neighs.length)];
-        [board[emptyIdx], board[rand]] = [board[rand], board[emptyIdx]];
-    }
-    renderBoard();
+    board = [1, 2, 3, 4, 5, 6, 7, 8, 0]; 
+    const grid = document.getElementById('puzzleGrid');
+    
+    // Shuffle
+    for(let i = 0; i < 50; i++) {
+        const emptyIdx = board.indexOf(0);
+        const neighs = getNeighbors(emptyIdx);
+        const rand = neighs[Math.floor(Math.random() * neighs.length)];
+        [board[emptyIdx], board[rand]] = [board[rand], board[emptyIdx]];
+    }
+    renderBoard();
 }
 
 function getNeighbors(i) {
-    const res = [];
-    if (i % 4 > 0) res.push(i - 1); // Left
-    if (i % 4 < 3) res.push(i + 1); // Right
-    if (i > 3) res.push(i - 4);     // Up
-    if (i < 12) res.push(i + 4);    // Down
-    return res;
+    const res = [];
+    if (i % 3 > 0) res.push(i - 1);
+    if (i % 3 < 2) res.push(i + 1);
+    if (i > 2) res.push(i - 3);
+    if (i < 6) res.push(i + 3);
+    return res;
 }
 
 function renderBoard() {
-    const grid = document.getElementById('puzzleGrid');
-    grid.innerHTML = '';
-    board.forEach((val, i) => {
-        const tile = document.createElement('div');
-        tile.className = 'tile' + (val === 0 ? ' empty' : '');
-        if(val !== 0) {
-            const r = Math.floor((val-1)/4);
-            const c = (val-1)%4;
-            // Background positioning based on 70px tiles (adjusted for 4x4)
-            tile.style.backgroundPosition = `-${c*70}px -${r*70}px`;
-            tile.onclick = () => {
-                const emptyIdx = board.indexOf(0);
-                if(getNeighbors(i).includes(emptyIdx)) {
-                    [board[i], board[emptyIdx]] = [board[emptyIdx], board[i]];
-                    renderBoard();
-                    if(JSON.stringify(board) === JSON.stringify(goal)) {
-                        document.getElementById('puzzleText').innerText = "Perfect! Just like us.";
-                        document.getElementById('puzzleContinue').style.display = "block";
-                    }
-                }
-            };
-        }
-        grid.appendChild(tile);
-    });
+    const grid = document.getElementById('puzzleGrid');
+    grid.innerHTML = '';
+    board.forEach((val, i) => {
+        const tile = document.createElement('div');
+        tile.className = 'tile' + (val === 0 ? ' empty' : '');
+        if(val !== 0) {
+            const r = Math.floor((val-1)/3);
+            const c = (val-1)%3;
+            tile.style.backgroundPosition = `-${c*80}px -${r*80}px`;
+            tile.onclick = () => {
+                const emptyIdx = board.indexOf(0);
+                if(getNeighbors(i).includes(emptyIdx)) {
+                    [board[i], board[emptyIdx]] = [board[emptyIdx], board[i]];
+                    renderBoard();
+                    if(JSON.stringify(board) === JSON.stringify(goal)) {
+                        document.getElementById('puzzleText').innerText = "Perfect! Just like us.";
+                        document.getElementById('puzzleContinue').style.display = "block";
+                    }
+                }
+            };
+        }
+        grid.appendChild(tile);
+    });
 }
 
 function moveNo() {
-    const btn = document.getElementById('noBtn');
-    btn.style.position = 'fixed';
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
-    btn.style.left = x + 'px';
-    btn.style.top = y + 'px';
+    const btn = document.getElementById('noBtn');
+    btn.style.position = 'fixed'; // Breaks out of the card container
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    btn.style.left = x + 'px';
+    btn.style.top = y + 'px';
 }
 
 function yes() {
-  document.body.innerHTML = `
-    <div class="story active" style="background: radial-gradient(circle at center, #7a003c, #2b0014); height: 100vh; display: flex; align-items: center; justify-content: center;">
-      <div id="hearts-container"></div>
-      <div class="card">
-        <h1>Forever Started! 💗</h1>
-        <p>I promise to love you always, Jebii.</p>
-        <div style="font-size: 60px; animation: pulse 1.5s infinite;">💖</div>
-      </div>
-    </div>`;
-  setInterval(createHeart, 50);
+  document.body.innerHTML = `
+    <div class="story active" style="background: radial-gradient(circle at center, #7a003c, #2b0014); height: 100vh; display: flex; align-items: center; justify-content: center;">
+      <div id="hearts-container"></div>
+      <div class="card">
+        <h1>Forever Started! 💗</h1>
+        <p>I promise to love you always, Jebii.</p>
+        <div style="font-size: 60px; animation: pulse 1.5s infinite;">💖</div>
+      </div>
+    </div>`;
+  setInterval(createHeart, 50);
 }
 
 muteBtn.onclick = () => {
-  if(music.paused) { music.play(); muteBtn.textContent = '🔊'; }
-  else { music.pause(); muteBtn.textContent = '🔇'; }
+  if(music.paused) { music.play(); muteBtn.textContent = '🔊'; }
+  else { music.pause(); muteBtn.textContent = '🔇'; }
 };
 </script>
 </body>
-</html>
+</html> 
