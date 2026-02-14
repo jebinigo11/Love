@@ -23,7 +23,6 @@ body{
   height: 100vh;
 }
 
-/* Floating Hearts Layer */
 #hearts-container {
   position: fixed;
   top: 0; left: 0;
@@ -54,26 +53,22 @@ body{
 h1{font-family:'Allura',cursive;font-size:55px;color:var(--gold);text-shadow: 2px 2px 10px rgba(0,0,0,0.3);}
 p{margin:20px 0;line-height:1.8; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem;}
 
-.tap{opacity:.5;font-size:12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px;}
-
 button {
   padding:15px 35px; border:none; border-radius:50px;
   background:linear-gradient(135deg, var(--pink), var(--accent));
   color:white; font-weight:600; cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 10px 20px rgba(255, 79, 154, 0.4);
 }
-button:hover { transform: scale(1.05); box-shadow: 0 15px 25px rgba(255, 79, 154, 0.6); }
 
 #muteBtn{
   position:fixed;top:20px;right:20px;
-  background:var(--glass); backdrop-filter:blur(10px);
-  border-radius:50%; width:50px; height:50px;
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; z-index:1000; border: 1px solid rgba(255,255,255,0.3);
+  background:var(--glass); border-radius:50%; 
+  width:50px; height:50px; display:flex; 
+  align-items:center; justify-content:center;
+  cursor:pointer; z-index:1000;
 }
 
-/* 3D CUBE - Slightly polished */
+/* 3D CUBE - MATCHING GITHUB FILENAMES */
 .scene{width:200px; height:200px; margin:40px auto; perspective:1200px;}
 .cube{
   width:100%; height:100%; position:relative;
@@ -82,42 +77,25 @@ button:hover { transform: scale(1.05); box-shadow: 0 15px 25px rgba(255, 79, 154
 .cube div{
   position:absolute; width:200px; height:200px;
   background-size:cover; background-position:center;
-  border: 2px solid rgba(255,255,255,0.4);
-  border-radius: 15px;
+  border: 2px solid rgba(255,255,255,0.4); border-radius: 15px;
 }
 
-/* Specific image paths from your folder */
-.cube .front{transform:translateZ(100px); background-image:url('photo1.jpg')}
+.cube .front{transform:translateZ(100px); background-image:url('photo1.jpg.png')}
 .cube .back{transform:rotateY(180deg) translateZ(100px); background-image:url('photo2.jpg')}
 .cube .right{transform:rotateY(90deg) translateZ(100px); background-image:url('photo3.jpg')}
 .cube .left{transform:rotateY(-90deg) translateZ(100px); background-image:url('photo4.jpg')}
 .cube .top{transform:rotateX(90deg) translateZ(100px); background-image:url('photo5.jpg')}
-.cube .bottom{transform:rotateX(-90deg) translateZ(100px); background-image:url('photo6.jpg')}
+.cube .bottom{transform:rotateX(-90deg) translateZ(100px); background-image:url('photo7.jpg.png')}
 
 @keyframes spin{ from{transform:rotateX(-20deg) rotateY(0deg)} to{transform:rotateX(-20deg) rotateY(360deg)} }
 
-/* Video Frame */
-video {
-  width: 100%; border-radius: 20px; border: 2px solid var(--glass);
-  margin: 15px 0; outline: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-#noBtn{ position:absolute; background:#33001a; color:white; transition: 0.2s; z-index: 10; }
-
-/* Dynamic Heart Style */
 .floating-heart {
-  position: absolute;
-  background-color: var(--pink);
-  transform: rotate(-45deg);
-  opacity: 0.8;
-  animation: floatUp linear infinite;
+  position: absolute; background-color: var(--pink);
+  transform: rotate(-45deg); animation: floatUp linear infinite;
 }
 .floating-heart::before, .floating-heart::after {
-  content: "";
-  position: absolute;
-  width: 100%; height: 100%;
-  background-color: inherit;
-  border-radius: 50%;
+  content: ""; position: absolute; width: 100%; height: 100%;
+  background-color: inherit; border-radius: 50%;
 }
 .floating-heart::before { top: -50%; left: 0; }
 .floating-heart::after { top: 0; left: 50%; }
@@ -126,8 +104,7 @@ video {
   0% { transform: translateY(110vh) rotate(-45deg) scale(1); opacity: 1; }
   100% { transform: translateY(-20vh) rotate(-45deg) scale(1.5); opacity: 0; }
 }
-
-@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>
 </head>
 
@@ -137,20 +114,14 @@ video {
 <div id="muteBtn">🔇</div>
 
 <audio id="bgMusic" loop preload="auto">
-  <source src="edho-solla-mass.mp3.mp3" type="audio/mpeg">
+  <source src="Aval.mp3" type="audio/mpeg">
 </audio>
 
 <div class="story active" onclick="nextStory()">
   <div class="card">
     <h1>Hey Jebii 💗</h1>
-    <p>I made this little space to tell you something special...</p>
-    <div class="tap">Tap to open my heart</div>
-  </div>
-</div>
-
-<div class="story" onclick="nextStory()">
-  <div class="card">
-    <p>"In your eyes, I found my favorite view. In your heart, I found my home."</p>
+    <p>I made this little space just for you...</p>
+    <div style="opacity:0.5; font-size:12px;">TAP TO START</div>
   </div>
 </div>
 
@@ -164,29 +135,13 @@ video {
         <div class="top"></div><div class="bottom"></div>
       </div>
     </div>
-    <p style="font-size: 0.9rem;">The best moments of my life.</p>
   </div>
 </div>
 
 <div class="story">
   <div class="card">
-    <h1>Press Play 🎥</h1>
-    <video id="myVideo" controls>
-      <source src="video.mp4" type="video/mp4">
-    </video>
-    <button onclick="nextStory()" style="margin-top:10px">Continue ❤️</button>
-  </div>
-</div>
-
-<div class="story">
-  <div class="card">
-    <h1 style="font-size: 45px;">One last thing...</h1>
-    <p>I don't just want you for today. I want you for every tomorrow.</p>
-    <h2 style="font-family:'Allura'; font-size: 48px; color: var(--gold); margin-bottom: 20px;">Will You Be Mine? 💍</h2>
-    <div style="display:flex; justify-content: space-around; align-items: center; min-height: 100px; position: relative;">
-        <button onclick="yes()">YES 💖</button>
-        <button id="noBtn">NO</button>
-    </div>
+    <h2 style="font-family:'Allura'; font-size: 48px; color: var(--gold);">Will You Be Mine? 💍</h2>
+    <button onclick="yes()">YES 💖</button>
   </div>
 </div>
 
@@ -194,27 +149,17 @@ video {
 const stories = document.querySelectorAll('.story');
 const music = document.getElementById('bgMusic');
 const muteBtn = document.getElementById('muteBtn');
-const video = document.getElementById('myVideo');
 let current = 0, muted = true;
 
-// Create Floating Hearts
 function createHeart() {
   const container = document.getElementById('hearts-container');
   const heart = document.createElement('div');
   heart.className = 'floating-heart';
-  
   const size = Math.random() * 15 + 10 + 'px';
-  heart.style.width = size;
-  heart.style.height = size;
-  
+  heart.style.width = size; heart.style.height = size;
   heart.style.left = Math.random() * 100 + 'vw';
   heart.style.animationDuration = Math.random() * 3 + 4 + 's';
-  heart.style.opacity = Math.random() * 0.5 + 0.3;
-  
-  // Random shades of pink/red
-  const colors = ['#ff9acb', '#ff4f9a', '#ff1a75', '#ffccd5'];
-  heart.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-  
+  heart.style.backgroundColor = ['#ff9acb', '#ff4f9a'][Math.floor(Math.random()*2)];
   container.appendChild(heart);
   setTimeout(() => heart.remove(), 7000);
 }
@@ -222,19 +167,9 @@ setInterval(createHeart, 400);
 
 function nextStory() {
   if(current === 0) {
-    music.volume = 0.5;
     music.play().catch(() => {});
-    muted = false;
-    muteBtn.textContent = '🔊';
+    muted = false; muteBtn.textContent = '🔊';
   }
-
-  // Duck music volume when video page is active
-  if(current === 3) {
-    music.volume = 0.1;
-  } else {
-    music.volume = 0.5;
-  }
-
   stories[current].classList.remove('active');
   current++;
   if(current < stories.length) stories[current].classList.add('active');
@@ -246,40 +181,9 @@ muteBtn.onclick = () => {
 };
 
 function yes() {
-  music.volume = 0.8;
-  document.body.innerHTML = `
-    <div class="story active">
-      <div id="hearts-container"></div>
-      <div class="card">
-        <h1>Forever Started! 💗</h1>
-        <p>You’ve made me the happiest person ever, Love. I promise to love you always.</p>
-        <div style="font-size: 50px; animation: pulse 1s infinite;">💖</div>
-      </div>
-    </div>`;
-  
-  // Re-run heart generation on the final screen much faster
-  setInterval(createHeart, 50);
+  document.body.innerHTML = '<div class="story active"><div class="card"><h1>Forever! 💗</h1><p>Happy Valentine\'s Day, Jebii!</p></div></div>';
+  setInterval(createHeart, 50); 
 }
-
-const noBtn = document.getElementById('noBtn');
-noBtn.onmouseover = noBtn.ontouchstart = (e) => {
-  e.preventDefault();
-  const x = Math.random() * (window.innerWidth - 100);
-  const y = Math.random() * (window.innerHeight - 50);
-  noBtn.style.position = 'fixed';
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
-};
 </script>
-
-<style>
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-</style>
-
 </body>
-
 </html>
