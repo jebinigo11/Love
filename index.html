@@ -82,11 +82,11 @@ button {
   border-radius: 10px;
 }
 .cube .front{transform:translateZ(90px); background-image:url('photo1.jpg')}
-.cube .back{transform:rotateY(180deg) translateZ(90px); background-image:url('photo1.jpg')}
-.cube .right{transform:rotateY(90deg) translateZ(90px); background-image:url('photo1.jpg')}
-.cube .left{transform:rotateY(-90deg) translateZ(90px); background-image:url('photo1.jpg')}
-.cube .top{transform:rotateX(90deg) translateZ(90px); background-image:url('photo1.jpg')}
-.cube .bottom{transform:rotateX(-90deg) translateZ(90px); background-image:url('photo1.jpg')}
+.cube .back{transform:rotateY(180deg) translateZ(90px); background-image:url('photo2.jpg')}
+.cube .right{transform:rotateY(90deg) translateZ(90px); background-image:url('photo3.jpg')}
+.cube .left{transform:rotateY(-90deg) translateZ(90px); background-image:url('photo4.jpg')}
+.cube .top{transform:rotateX(90deg) translateZ(90px); background-image:url('photo5.jpg')}
+.cube .bottom{transform:rotateX(-90deg) translateZ(90px); background-image:url('photo6.jpg')}
 
 @keyframes spin{ from{transform:rotateX(-20deg) rotateY(0deg)} to{transform:rotateX(-20deg) rotateY(360deg)} }
 
@@ -176,6 +176,8 @@ button {
         <div class="top"></div><div class="bottom"></div>
       </div>
     </div>
+
+    
     <button onclick="nextStory()">Next Memory 📸</button>
   </div>
 </div>
@@ -349,3 +351,4 @@ muteBtn.onclick = () => {
 </script>
 </body>
 </html>
+
